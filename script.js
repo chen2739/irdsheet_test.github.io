@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    var query = 'SELECT * FROM your_table';
+    var query = 'select * from analyst_dev.irdsheetlog_test';
     $.ajax({
         url: '/api/query',
         type: 'POST',
