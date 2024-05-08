@@ -1,26 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Query Results</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-    }
-    table {
-        border-collapse: collapse;
-        width: 100%;
-    }
-    th, td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-    }
-    th {
-        background-color: #f2f2f2;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Query Results</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
 
@@ -29,9 +26,8 @@
 <table id="queryResults">
     <thead>
         <tr>
-            <th>Column 1</th>
-            <th>Column 2</th>
-            <!-- Add more table headers as needed -->
+            <th>Product Account ID</th>
+            <th>Comment</th>
         </tr>
     </thead>
     <tbody>
@@ -39,8 +35,42 @@
     </tbody>
 </table>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="script.js"></script>
+<script>
+    function displayResults(data) {
+        var tableBody = document.querySelector('#queryResults tbody');
+        tableBody.innerHTML = ''; // Clear existing rows
+
+        data.forEach(function(item) {
+            var row = document.createElement('tr');
+            var productIdCell = document.createElement('td');
+            productIdCell.textContent = item.product_account_id;
+            var commentCell = document.createElement('td');
+            commentCell.textContent = item.comment;
+
+            row.appendChild(productIdCell);
+            row.appendChild(commentCell);
+            tableBody.appendChild(row);
+        });
+    }
+
+    // Fetch data from the server
+    fetch('http://127.0.0.1:5000/api/query')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(responseData => {
+        const data = responseData.data; // Extract the 'data' array
+        console.log('Query Results:', data);
+        displayResults(data);
+        // Process the received data here
+    })
+    .catch(error => {
+        console.error('Fetch Error:', error);
+    });
+</script>
 
 </body>
 </html>
